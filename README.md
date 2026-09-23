@@ -5,6 +5,7 @@ SktechGamer Giveaway is a Next.js app for managing a creator giveaway with Googl
 ## Overview
 
 This project lets users:
+
 - sign in with Google
 - verify they are subscribed to the configured SktechGamer YouTube channel
 - submit a giveaway entry
@@ -38,6 +39,7 @@ This project lets users:
 ## Setup
 
 Requirements:
+
 - Node.js 20.9+
 - PostgreSQL database (Neon recommended)
 - Google Cloud project with OAuth enabled
@@ -70,16 +72,16 @@ Requirements:
    YOUTUBE_CHANNEL_ID=UC...
 
 10. Set the admin email:
-   ADMIN_EMAIL=your-google-account@example.com
+    ADMIN_EMAIL=your-google-account@example.com
 
 11. Generate an Auth secret:
-   openssl rand -base64 32
+    openssl rand -base64 32
 
 12. Start the app:
-   npm run dev
+    npm run dev
 
 13. Open the app in the browser:
-   http://localhost:3000
+    http://localhost:3000
 
 ## Environment variables
 
