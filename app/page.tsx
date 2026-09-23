@@ -264,7 +264,7 @@ export default function Home() {
               <textarea
                 name="question"
                 rows={4}
-                placeholder="What should SkTechGamer play next, and why?"
+                placeholder="You can play one valorant agent for the rest of you life. who are you choosing?"
                 required
               />
             </label>
