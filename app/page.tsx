@@ -117,37 +117,114 @@ export default function Home() {
   }
 
   return (
-    <main className="page">
-      <div className="brand">SK<span>TECH</span>GAMER</div>
+    <main className="page home-page">
+      <header className="topbar">
+        <div className="brand">SK<span>TECH</span>GAMER</div>
 
-      <section className="card hero">
-        <span className="eyebrow">NIGHT MARKET GIVEAWAY</span>
-        <h1>Verify <span>YouTube</span></h1>
-        {entryCount && (
-          <div className="entry-count">
-            <strong>{entryCount.count} / {entryCount.limit}</strong>
-            <span>Participants registered</span>
-            <div className="progress-track">
-              <div style={{ width: `${entryCount.progress}%` }} />
-            </div>
+        <nav className="top-links" aria-label="Social links">
+          <a href={process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_URL ?? "https://www.youtube.com/@SkTechGamer05"} target="_blank" rel="noreferrer">
+            YouTube
+          </a>
+          <a href={process.env.NEXT_PUBLIC_DISCORD_URL ?? "https://discord.gg/your-server"} target="_blank" rel="noreferrer">
+            Discord
+          </a>
+          <a href={process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://www.instagram.com/sktechgamer05/"} target="_blank" rel="noreferrer">
+            Instagram
+          </a>
+        </nav>
+      </header>
+
+      <section className="hero-panel">
+        <div className="hero-copy">
+          <span className="eyebrow">SKTECHGAMER OFFICIAL GIVEAWAY</span>
+          <h1>LEVEL UP <span>YOUR CHANCES</span></h1>
+          <p>
+            Join the SkTechGamer community, verify your YouTube subscription, and enter for
+            exclusive giveaway rewards. This is your gateway to gaming drops, community wins,
+            and creator-exclusive perks.
+          </p>
+
+          <div className="cta-row">
+            {!entrySubmitted && (
+              <button className="primary btn-lg" onClick={verify} disabled={loading}>
+                {loading ? "Connecting..." : "🔴 Verify & Enter"}
+              </button>
+            )}
+            <a
+              className="secondary-btn"
+              href={process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_URL ?? "https://www.youtube.com/@SkTechGamer05"}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Watch on YouTube
+            </a>
           </div>
-        )}
-        <p>
-          Sign in with the Google account you use for YouTube.
-          We will verify that exact account&apos;s subscription to SkTechGamer.
-        </p>
 
-        {!entrySubmitted && (
-          <button className="primary" onClick={verify} disabled={loading}>
-            {loading ? "Connecting..." : "🔴 Verify YouTube Subscription"}
-          </button>
-        )}
+          {entryCount && (
+            <div className="entry-count compact">
+              <strong>{entryCount.count} / {entryCount.limit}</strong>
+              <span>Entries locked in</span>
+              <div className="progress-track">
+                <div style={{ width: `${entryCount.progress}%` }} />
+              </div>
+            </div>
+          )}
+        </div>
 
+        <div className="hero-side">
+          <div className="status-card glow">
+            <span className="mini-label">LIVE STATUS</span>
+            <strong>Giveaway Active</strong>
+            <p>Verified members get first access to entry and reward announcements.</p>
+          </div>
+
+          <div className="status-card dark">
+            <span className="mini-label">CHECKLIST</span>
+            <ul>
+              <li>Google sign-in</li>
+              <li>YouTube subscription check</li>
+              <li>Giveaway entry form</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="info-grid">
+        <article className="info-card">
+          <span className="mini-label">01</span>
+          <h3>Verify</h3>
+          <p>Use your Google account linked to your YouTube channel and confirm your subscription.</p>
+        </article>
+        <article className="info-card">
+          <span className="mini-label">02</span>
+          <h3>Enter</h3>
+          <p>Complete the giveaway form and claim your slot in the community competition.</p>
+        </article>
+        <article className="info-card">
+          <span className="mini-label">03</span>
+          <h3>Win</h3>
+          <p>Stay active in the community and watch for giveaway drops and winner announcements.</p>
+        </article>
+      </section>
+
+      <section className="card hero inner-card">
         {result?.subscribed && (
           <div className="status ok">
             <div className="icon">✓</div>
             <strong>Subscription Verified!</strong>
             <p>You are subscribed to SkTechGamer.</p>
+          </div>
+        )}
+
+        {!entrySubmitted && (
+          <div className="verify-callout">
+            <p>
+              Sign in with the Google account you use for YouTube. We will verify that exact
+              account&apos;s subscription to SkTechGamer before you can complete the giveaway entry.
+            </p>
+            <button className="primary" onClick={verify} disabled={loading}>
+              {loading ? "Connecting..." : "🔴 Verify YouTube Subscription"}
+            </button>
           </div>
         )}
 
@@ -250,10 +327,6 @@ export default function Home() {
         {error && <div className="status bad">{error}</div>}
       </section>
 
-      <p className="privacy">
-        Your Google OAuth access token is handled server-side. It is never
-        placed in frontend JavaScript.
-      </p>
     </main>
   );
 }
