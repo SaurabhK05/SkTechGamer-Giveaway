@@ -1,7 +1,21 @@
 import { auth } from "@/auth";
 import { isAdminEmail } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
+async function clearParticipants() {
+  "use server";
+
+  const session = await auth();
+  if (!isAdminEmail(session?.user?.email)) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.participant.deleteMany();
+  revalidatePath("/admin");
+  redirect("/admin");
+}
 
 export default async function AdminPage({
   searchParams
@@ -74,6 +88,12 @@ export default async function AdminPage({
           </span>
           <span>Page {Math.min(page, totalPages)} of {totalPages}</span>
         </div>
+
+        <form action={clearParticipants} className="admin-clear-form">
+          <button className="secondary danger" type="submit">
+            Clear database
+          </button>
+        </form>
 
         <div className="table-wrap">
           <table>
