@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Participant {
+  id                String   @id @default(cuid())
+  youtubeChannelId  String   @unique
+  googleEmail       String
+  riotId            String   @unique
+  discordJoined     Boolean  @default(false)
+  instagramFollowed Boolean  @default(false)
+  facebookFollowed  Boolean  @default(false)
+  giveawayAnswer    String   @db.VarChar(500)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([createdAt])
+}

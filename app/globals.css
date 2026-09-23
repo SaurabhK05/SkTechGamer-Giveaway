@@ -1,0 +1,369 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #07080d;
+  color: #f5f7ff;
+  font-family:
+    Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+}
+body {
+  background: radial-gradient(circle at 50% 0, #291019 0, #07080d 45%);
+}
+button,
+a {
+  font: inherit;
+}
+.page {
+  width: min(720px, calc(100% - 32px));
+  margin: auto;
+  padding: 38px 0 70px;
+}
+.brand {
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+.brand span {
+  color: #ff4655;
+}
+.card {
+  margin-top: 28px;
+  padding: 30px;
+  border: 1px solid #292d3d;
+  border-radius: 22px;
+  background: rgba(17, 19, 28, 0.96);
+  box-shadow: 0 24px 80px #0007;
+}
+.hero {
+  text-align: left;
+}
+.legal-page h1 {
+  margin-bottom: 8px;
+}
+.legal-page h2 {
+  margin: 28px 0 8px;
+  color: #f5f7ff;
+  font-size: 20px;
+}
+.legal-page p {
+  margin: 0;
+}
+.entry-count {
+  margin: 22px 0 24px;
+  padding: 14px 16px;
+  border: 1px solid #292d3d;
+  border-radius: 12px;
+  background: #0c0e15;
+}
+.entry-count strong,
+.entry-count span {
+  display: block;
+}
+.entry-count strong {
+  color: #f5f7ff;
+  font-size: 20px;
+}
+.entry-count span {
+  margin-top: 3px;
+  color: #9ca3b8;
+  font-size: 12px;
+}
+.progress-track {
+  height: 6px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #292d3d;
+}
+.progress-track div {
+  height: 100%;
+  border-radius: inherit;
+  background: #ff4655;
+  transition: width 300ms ease;
+}
+.eyebrow {
+  font-size: 12px;
+  color: #a5abc0;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+}
+h1 {
+  font-size: clamp(42px, 8vw, 70px);
+  line-height: 0.95;
+  margin: 18px 0 14px;
+}
+h1 span {
+  color: #ff4655;
+}
+p {
+  color: #9ca3b8;
+  line-height: 1.65;
+}
+.primary,
+.secondary,
+.link {
+  display: block;
+  width: 100%;
+  padding: 15px 18px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 900;
+  cursor: pointer;
+  border: 0;
+  text-decoration: none;
+}
+.primary {
+  background: linear-gradient(135deg, #ff4655, #ff7562);
+  color: #fff;
+}
+.secondary {
+  background: #191c28;
+  color: #fff;
+  border: 1px solid #303448;
+  margin-top: 10px;
+}
+.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.status {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #292d3d;
+  background: #0c0e15;
+}
+.status.ok {
+  border-color: #1d7457;
+  background: #091712;
+  color: #82f0c2;
+}
+.status.bad {
+  border-color: #74333b;
+  background: #1a0b0e;
+  color: #ff9da6;
+}
+.status p {
+  margin: 7px 0 12px;
+}
+.entry-form {
+  margin-top: 22px;
+  padding-top: 24px;
+  border-top: 1px solid #292d3d;
+}
+.step {
+  color: #ff7562;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+.step span {
+  color: #a5abc0;
+}
+.entry-form h2 {
+  margin: 10px 0 6px;
+  font-size: 25px;
+}
+.entry-form p {
+  margin: 0 0 20px;
+}
+.field {
+  display: block;
+  margin-top: 16px;
+  color: #f5f7ff;
+  font-size: 14px;
+  font-weight: 800;
+}
+.field input,
+.field textarea {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px 14px;
+  border: 1px solid #303448;
+  border-radius: 10px;
+  background: #0c0e15;
+  color: #f5f7ff;
+  font: inherit;
+  resize: vertical;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid #ff4655;
+  outline-offset: 1px;
+}
+.check-row {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  margin-top: 16px;
+  color: #d8dbea;
+  font-size: 14px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.check-row input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: #ff4655;
+}
+.social-link {
+  display: inline-block;
+  margin: 7px 0 0 29px;
+  color: #ff7562;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.social-link:hover {
+  text-decoration: underline;
+}
+.entry-form .primary {
+  margin-top: 22px;
+}
+.social-note {
+  margin: 16px 0 0;
+  color: #a5abc0;
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: center;
+}
+.entry-success {
+  margin-top: 22px;
+}
+.icon {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.privacy {
+  font-size: 12px;
+  margin-top: 15px;
+}
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 24px 0;
+}
+.admin-stats div {
+  padding: 14px;
+  border: 1px solid #292d3d;
+  border-radius: 10px;
+  background: #0c0e15;
+}
+.admin-stats strong,
+.admin-stats span {
+  display: block;
+}
+.admin-stats strong {
+  font-size: 24px;
+}
+.admin-stats span {
+  margin-top: 4px;
+  color: #9ca3b8;
+  font-size: 11px;
+}
+.admin-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.admin-search input {
+  min-width: 0;
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #303448;
+  border-radius: 10px;
+  background: #0c0e15;
+  color: #f5f7ff;
+  font: inherit;
+}
+.admin-search .secondary {
+  width: auto;
+  margin-top: 0;
+}
+.admin-results-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: #9ca3b8;
+  font-size: 12px;
+}
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #292d3d;
+  border-radius: 12px;
+}
+table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #292d3d;
+  vertical-align: top;
+}
+th {
+  color: #ff7562;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+td {
+  color: #d8dbea;
+  line-height: 1.45;
+}
+.empty {
+  padding: 18px;
+  margin: 0;
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+.pagination a,
+.pagination span {
+  padding: 9px 12px;
+  border: 1px solid #303448;
+  border-radius: 8px;
+  color: #f5f7ff;
+  font-size: 12px;
+  text-decoration: none;
+}
+.pagination a:hover {
+  border-color: #ff4655;
+}
+.pagination .disabled {
+  color: #62697d;
+}
+@media (max-width: 620px) {
+  .card {
+    padding: 22px;
+  }
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .admin-search {
+    display: block;
+  }
+  .admin-search .secondary {
+    margin-top: 10px;
+  }
+}
