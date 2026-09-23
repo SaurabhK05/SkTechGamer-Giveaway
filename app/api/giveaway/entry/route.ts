@@ -55,7 +55,6 @@ export async function POST(request: Request) {
       : "";
   const discordJoined = input.discordJoined;
   const instagramFollowed = input.instagramFollowed;
-  const facebookFollowed = input.facebookFollowed;
 
   if (!riotId || riotId.length > MAX_RIOT_ID_LENGTH) {
     return errorResponse(
@@ -75,8 +74,7 @@ export async function POST(request: Request) {
 
   if (
     typeof discordJoined !== "boolean" ||
-    typeof instagramFollowed !== "boolean" ||
-    typeof facebookFollowed !== "boolean"
+    typeof instagramFollowed !== "boolean"
   ) {
     return errorResponse(
       "INVALID_SOCIAL_CONFIRMATION",
@@ -85,10 +83,10 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!discordJoined || !instagramFollowed || !facebookFollowed) {
+  if (!discordJoined || !instagramFollowed) {
     return errorResponse(
       "REQUIREMENTS_NOT_COMPLETED",
-      "Please complete all social steps before submitting your entry.",
+      "Please complete the required social steps before submitting your entry.",
       400
     );
   }
@@ -146,7 +144,6 @@ export async function POST(request: Request) {
           riotId,
           discordJoined,
           instagramFollowed,
-          facebookFollowed,
           giveawayAnswer
         },
         select: { id: true }

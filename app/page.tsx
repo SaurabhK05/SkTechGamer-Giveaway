@@ -91,7 +91,6 @@ export default function Home() {
         riotId: formData.get("riotId"),
         discordJoined: formData.get("discord") === "on",
         instagramFollowed: formData.get("instagram") === "on",
-        facebookFollowed: formData.get("facebook") === "on",
         giveawayAnswer: formData.get("question")
       })
     });
@@ -258,14 +257,6 @@ export default function Home() {
             </label>
             <a className="social-link" href={process.env.NEXT_PUBLIC_INSTAGRAM_URL} target="_blank" rel="noreferrer">
               Follow Instagram
-            </a>
-
-            <label className="check-row">
-              <input name="facebook" type="checkbox" required />
-              <span>I follow SkTechGamer on Facebook</span>
-            </label>
-            <a className="social-link" href={process.env.NEXT_PUBLIC_FACEBOOK_URL} target="_blank" rel="noreferrer">
-              Follow Facebook
             </a>
 
             <label className="field">
