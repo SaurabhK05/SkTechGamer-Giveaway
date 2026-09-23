@@ -1,113 +1,120 @@
-# Escate Tech Gamer Giveaway
+# SktechGamer Giveaway
 
-This project uses Next.js App Router for both frontend and backend. Next.js is designed as a full-stack React framework, and the App Router supports route handlers and server-side logic. See the official docs: https://nextjs.org/docs
+SktechGamer Giveaway is a Next.js app for managing a creator giveaway with Google sign-in, YouTube subscription verification, and admin tracking. It is built with the App Router, Prisma, and Neon Postgres.
 
-## Structure
+## Overview
 
-app/
-  page.tsx                         User UI
-  layout.tsx                       Root layout
-  globals.css                     UI styling
-  admin/page.tsx                   Admin-only page
-  api/auth/[...nextauth]/route.ts  Google OAuth callbacks
-  api/youtube/verify/route.ts      YouTube subscription API check
+This project lets users:
+- sign in with Google
+- verify they are subscribed to the configured SktechGamer YouTube channel
+- submit a giveaway entry
+- view their current participation status
+- allow an admin to review entries and counts from the protected admin dashboard
 
-auth.ts                            Google OAuth + Auth.js configuration
-auth.config.ts                     Auth/proxy config
-proxy.ts                           Admin route protection
-types/next-auth.d.ts               Session typing
+## Tech stack
+
+- Next.js App Router
+- TypeScript
+- Prisma ORM
+- PostgreSQL via Neon
+- NextAuth for Google authentication
+- YouTube Data API v3
+
+## Project structure
+
+- app/page.tsx — public landing page
+- app/admin/page.tsx — admin dashboard
+- app/api/auth/[...nextauth]/route.ts — auth routes
+- app/api/giveaway/entry/route.ts — giveaway submission logic
+- app/api/giveaway/count/route.ts — participant count endpoint
+- app/api/youtube/verify/route.ts — YouTube subscription verification
+- auth.ts — auth configuration
+- auth.config.ts — auth and proxy config
+- prisma/schema.prisma — Prisma schema
+- lib/prisma.ts — Prisma client
+- proxy.ts — admin route protection
+- types/next-auth.d.ts — session typing
 
 ## Setup
 
-Requirements: Node.js 20.9+ is recommended by current Next.js docs.
+Requirements:
+- Node.js 20.9+
+- PostgreSQL database (Neon recommended)
+- Google Cloud project with OAuth enabled
+- YouTube Data API v3 enabled
 
 1. Install dependencies:
    npm install
 
-2. Copy:
-   .env.example -> .env.local
+2. Create a local environment file:
+   copy `.env.example` to `.env.local`
 
-3. Create a Neon PostgreSQL database and add its connection string as
-   DATABASE_URL in .env.local.
+3. Add your database connection string:
+   DATABASE_URL=your_neon_postgres_connection_string
 
-4. Apply the initial database migration:
+4. Apply the database schema:
    npm run db:deploy
 
-5. Create a Google Cloud project.
+5. Create a Google OAuth app in Google Cloud.
 
-6. Enable YouTube Data API v3.
+6. Enable the YouTube Data API v3.
 
-7. Create an OAuth 2.0 Client ID of type Web application.
-
-8. Add this Authorized redirect URI:
+7. Add the redirect URI:
    http://localhost:3000/api/auth/callback/google
 
-9. Put your Google Client ID and Secret into .env.local.
+8. Add your Google client credentials to `.env.local`:
+   GOOGLE_CLIENT_ID
+   GOOGLE_CLIENT_SECRET
 
-10. Put your permanent SkTechGamer YouTube Channel ID (UC...) into:
-   YOUTUBE_CHANNEL_ID
+9. Set your SktechGamer YouTube channel ID:
+   YOUTUBE_CHANNEL_ID=UC...
 
-11. Set ADMIN_EMAIL to the Google account that should access /admin.
+10. Set the admin email:
+   ADMIN_EMAIL=your-google-account@example.com
 
-12. Generate AUTH_SECRET:
+11. Generate an Auth secret:
    openssl rand -base64 32
 
-13. Start:
+12. Start the app:
    npm run dev
 
-14. Open:
+13. Open the app in the browser:
    http://localhost:3000
 
-## Important YouTube OAuth detail
+## Environment variables
 
-The Google OAuth request asks for:
+Example values to include in `.env.local`:
+
+- DATABASE_URL
+- AUTH_SECRET
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+- YOUTUBE_CHANNEL_ID
+- ADMIN_EMAIL
+- NEXTAUTH_URL=http://localhost:3000
+
+## YouTube verification
+
+The app requests the following Google OAuth scope:
 https://www.googleapis.com/auth/youtube.readonly
 
-After Google login, the backend calls YouTube Data API:
-subscriptions.list({
-  part: ["snippet"],
-  mine: true,
-  forChannelId: YOUTUBE_CHANNEL_ID,
-  maxResults: 1
-})
+After logging in, it checks the YouTube API with a subscription query to confirm the user is subscribed to the configured SktechGamer channel.
 
-A returned subscription item means the authenticated YouTube account is subscribed to the configured channel.
+## Admin and giveaway behavior
 
-## Giveaway database
+- Public pages show the participant count and current user result.
+- Admin-only screens are protected and can access the full participant list.
+- Discord, Instagram, and Facebook information are self-declared in this version and are not independently verified by the app.
 
-The giveaway entry is saved in PostgreSQL through Prisma. The public page only
-receives the participant count and the current user's submission result.
-Participant records are available only to an authorized administrator at
-`/admin`. Discord, Instagram, and Facebook are self-declared in this version;
-the application does not claim to verify those memberships.
+## Production notes
 
-For production deployment, set `DATABASE_URL` in Vercel and run:
+For production deployments, use a persistent database and a production auth/session configuration instead of local development defaults. Set `DATABASE_URL` in your deployment environment and run:
 
-   npm run db:deploy
+npm run db:deploy
 
-## Next modules
+## Planned improvements
 
-The intended next expansion is:
-
-Step 2 giveaway entry
-- Riot ID
-- Discord join CTA
-- Instagram follow CTA
-- Facebook follow CTA
-- Giveaway question
-
-Backend/database
-- participant table
-- unique Riot ID / Google account / YouTube channel ID constraints
-- entry timestamp
-- verified subscription timestamp
-
-Admin
-- protected /admin dashboard
-- participant count
-- searchable entries
-- random winner picker
-- reroll
-- winner history
-
-For production, use a persistent database and a production session/auth setup rather than local development defaults.
+- additional giveaway fields such as Riot ID and Discord/Instagram/Facebook verification CTA
+- stronger uniqueness checks for participant data
+- enhanced admin actions such as search, winner selection, and rerolls
+- winner history tracking and analytics
