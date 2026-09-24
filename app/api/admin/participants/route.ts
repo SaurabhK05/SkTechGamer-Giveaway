@@ -17,8 +17,7 @@ export async function GET(request: Request) {
     ? {
         OR: [
           { riotId: { contains: query, mode: "insensitive" as const } },
-          { googleEmail: { contains: query, mode: "insensitive" as const } },
-          { youtubeChannelId: { contains: query, mode: "insensitive" as const } }
+          { googleEmail: { contains: query, mode: "insensitive" as const } }
         ]
       }
     : undefined;

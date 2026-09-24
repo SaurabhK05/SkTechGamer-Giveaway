@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import {
-  getAuthenticatedYouTubeAccount,
+  getAuthenticatedYouTubeClient,
   isSubscribedToChannel
 } from "@/lib/youtube";
 import { NextResponse } from "next/server";
@@ -37,15 +37,12 @@ export async function GET() {
   }
 
   try {
-    const { channelId: userChannelId, youtube } =
-      await getAuthenticatedYouTubeAccount(
-      session.accessToken
-      );
+    const youtube = getAuthenticatedYouTubeClient(session.accessToken);
     const subscribed = await isSubscribedToChannel(youtube, channelId);
     const alreadyRegistered = subscribed
       ? Boolean(
           await prisma.participant.findUnique({
-            where: { youtubeChannelId: userChannelId },
+            where: { googleEmail: session.user?.email ?? "" },
             select: { id: true }
           })
         )

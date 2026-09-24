@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import {
-  getAuthenticatedYouTubeAccount,
+  getAuthenticatedYouTubeClient,
   isSubscribedToChannel
 } from "@/lib/youtube";
 import { Prisma } from "@prisma/client";
@@ -92,9 +92,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { channelId, youtube } = await getAuthenticatedYouTubeAccount(
-      accessToken
-    );
+    const youtube = getAuthenticatedYouTubeClient(accessToken);
     const subscribed = await isSubscribedToChannel(
       youtube,
       configuredChannelId
@@ -120,12 +118,12 @@ export async function POST(request: Request) {
 
       const existing = await transaction.participant.findFirst({
         where: {
-          OR: [{ youtubeChannelId: channelId }, { riotId }]
+          OR: [{ googleEmail }, { riotId }]
         },
-        select: { youtubeChannelId: true, riotId: true }
+        select: { googleEmail: true, riotId: true }
       });
 
-      if (existing?.youtubeChannelId === channelId) {
+      if (existing?.googleEmail === googleEmail) {
         throw new Error("ALREADY_REGISTERED");
       }
       if (existing?.riotId === riotId) {
@@ -139,7 +137,6 @@ export async function POST(request: Request) {
 
       return transaction.participant.create({
         data: {
-          youtubeChannelId: channelId,
           googleEmail,
           riotId,
           discordJoined,

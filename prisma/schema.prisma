@@ -9,8 +9,7 @@ datasource db {
 
 model Participant {
   id                String   @id @default(cuid())
-  youtubeChannelId  String   @unique
-  googleEmail       String
+  googleEmail       String   @unique
   riotId            String   @unique
   discordJoined     Boolean  @default(false)
   instagramFollowed Boolean  @default(false)

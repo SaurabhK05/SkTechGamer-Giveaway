@@ -14,23 +14,8 @@ function createYouTubeClient(accessToken: string) {
   });
 }
 
-export async function getAuthenticatedYouTubeAccount(accessToken: string) {
-  const youtube = createYouTubeClient(accessToken);
-  const response = await youtube.channels.list({
-    part: ["id", "snippet"],
-    mine: true,
-    maxResults: 1
-  });
-  const channel = response.data.items?.[0];
-
-  if (!channel?.id) {
-    throw new Error("No YouTube channel found for this Google account.");
-  }
-
-  return {
-    channelId: channel.id,
-    youtube
-  };
+export function getAuthenticatedYouTubeClient(accessToken: string) {
+  return createYouTubeClient(accessToken);
 }
 
 export async function isSubscribedToChannel(

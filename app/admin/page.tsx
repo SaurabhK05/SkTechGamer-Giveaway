@@ -53,8 +53,7 @@ export default async function AdminPage({
     ? {
         OR: [
           { riotId: { contains: query, mode: "insensitive" as const } },
-          { googleEmail: { contains: query, mode: "insensitive" as const } },
-          { youtubeChannelId: { contains: query, mode: "insensitive" as const } }
+          { googleEmail: { contains: query, mode: "insensitive" as const } }
         ]
       }
     : undefined;
@@ -118,7 +117,6 @@ export default async function AdminPage({
               <tr>
                 <th>Riot ID</th>
                 <th>Google Email</th>
-                <th>YouTube Channel</th>
                 <th>Social</th>
                 <th>Answer</th>
                 <th>Registered</th>
@@ -130,7 +128,6 @@ export default async function AdminPage({
                 <tr key={participant.id}>
                   <td>{participant.riotId}</td>
                   <td>{participant.googleEmail}</td>
-                  <td>{participant.youtubeChannelId}</td>
                   <td>
                     D {participant.discordJoined ? "Yes" : "No"}<br />
                     I {participant.instagramFollowed ? "Yes" : "No"}<br />
