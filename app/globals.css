@@ -57,6 +57,55 @@ a {
   color: #fff;
   transform: translateY(-1px);
 }
+.account-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 100%;
+}
+.account-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 190px;
+  overflow: hidden;
+  color: #b7bfce;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-icon {
+  color: #ff7562;
+  font-size: 20px;
+  line-height: 1;
+}
+.account-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f3f6ff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+.account-button:hover {
+  border-color: rgba(255, 70, 85, 0.55);
+  background: rgba(255, 70, 85, 0.1);
+}
+.account-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.account-button.danger {
+  color: #ff9da6;
+}
 .hero-panel {
   display: grid;
   grid-template-columns: 1.55fr 0.9fr;
@@ -401,6 +450,10 @@ h1 span {
     flex-direction: column;
     align-items: flex-start;
   }
+  .account-controls {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
 }
 @media (max-width: 600px) {
   .page {
@@ -419,6 +472,9 @@ h1 span {
   .secondary-btn,
   .secondary {
     width: 100%;
+  }
+  .account-email {
+    max-width: calc(100vw - 40px);
   }
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { getSession, signIn } from "next-auth/react";
+import { getSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -12,6 +12,8 @@ export default function Home() {
   }>(null);
   const [error, setError] = useState<string | null>(null);
   const [entrySubmitted, setEntrySubmitted] = useState(false);
+  const [signedInEmail, setSignedInEmail] = useState<string | null>(null);
+  const [signingOut, setSigningOut] = useState(false);
   const [entryCount, setEntryCount] = useState<{
     count: number;
     limit: number;
@@ -55,11 +57,40 @@ export default function Home() {
 
   useEffect(() => {
     void loadEntryCount();
+    void getSession().then((session) => {
+      setSignedInEmail(session?.user?.email ?? null);
+    });
     if (!new URLSearchParams(window.location.search).has("verify")) return;
 
     window.history.replaceState({}, "", "/");
     void checkSubscription();
   }, []);
+
+  async function clearBrowserState() {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+
+    if ("caches" in window) {
+      const cacheNames = await window.caches.keys();
+      await Promise.all(cacheNames.map((cacheName) => window.caches.delete(cacheName)));
+    }
+  }
+
+  async function logOut() {
+    setSigningOut(true);
+    await clearBrowserState();
+    await signOut({ callbackUrl: "/" });
+  }
+
+  async function switchAccount() {
+    setSigningOut(true);
+    await clearBrowserState();
+    await signOut({ redirect: false });
+    await signIn("google", {
+      callbackUrl: "/?verify=1",
+      prompt: "select_account"
+    });
+  }
 
   async function verify() {
     setLoading(true);
@@ -131,6 +162,28 @@ export default function Home() {
             Instagram
           </a>
         </nav>
+
+        <div className="account-controls">
+          {signedInEmail ? (
+            <>
+              <span className="account-email" title={signedInEmail}>
+                <span className="account-icon" aria-hidden="true">◎</span>
+                {signedInEmail}
+              </span>
+              <button className="account-button" onClick={switchAccount} disabled={signingOut}>
+                {signingOut ? "Switching..." : "Switch account"}
+              </button>
+              <button className="account-button danger" onClick={logOut} disabled={signingOut}>
+                {signingOut ? "Signing out..." : "Sign out"}
+              </button>
+            </>
+          ) : (
+            <button className="account-button" onClick={() => void signIn("google", { callbackUrl: "/?verify=1", prompt: "select_account" })}>
+              <span className="account-icon" aria-hidden="true">◎</span>
+              Sign in
+            </button>
+          )}
+        </div>
       </header>
 
       <section className="hero-panel">
