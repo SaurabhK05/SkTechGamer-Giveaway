@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { getSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
@@ -20,6 +20,8 @@ export default function Home() {
     limit: number;
     progress: number;
   } | null>(null);
+  const verificationSectionRef = useRef<HTMLElement>(null);
+  const entryFormRef = useRef<HTMLFormElement>(null);
 
   async function loadEntryCount() {
     try {
@@ -64,8 +66,25 @@ export default function Home() {
     if (!new URLSearchParams(window.location.search).has("verify")) return;
 
     window.history.replaceState({}, "", "/");
+    requestAnimationFrame(() => {
+      verificationSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: window.matchMedia("(max-width: 600px)").matches ? "end" : "start"
+      });
+    });
     void checkSubscription();
   }, []);
+
+  useEffect(() => {
+    if (!result?.subscribed) return;
+
+    requestAnimationFrame(() => {
+      entryFormRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: window.matchMedia("(max-width: 600px)").matches ? "end" : "start"
+      });
+    });
+  }, [result?.subscribed]);
 
   async function clearBrowserState() {
     window.localStorage.clear();
@@ -260,7 +279,7 @@ export default function Home() {
         </article>
       </section>
 
-      <section className="card hero inner-card">
+      <section className="card hero inner-card" ref={verificationSectionRef}>
         {result?.subscribed && (
           <div className="status ok">
             <div className="icon">✓</div>
@@ -282,7 +301,7 @@ export default function Home() {
         )}
 
         {result?.subscribed && !result.alreadyRegistered && !entrySubmitted && (
-          <form className="entry-form" onSubmit={submitEntry}>
+          <form className="entry-form" ref={entryFormRef} onSubmit={submitEntry}>
             <div className="step">STEP 2 <span>• GIVEAWAY ENTRY</span></div>
             <h2>Complete your entry</h2>
             <p>Finish these quick steps to become eligible for the giveaway.</p>
