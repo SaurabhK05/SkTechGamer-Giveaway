@@ -17,6 +17,23 @@ async function clearParticipants() {
   redirect("/admin");
 }
 
+async function deleteParticipant(formData: FormData) {
+  "use server";
+
+  const session = await auth();
+  if (!isAdminEmail(session?.user?.email)) {
+    throw new Error("Unauthorized");
+  }
+
+  const participantId = formData.get("participantId");
+  if (typeof participantId !== "string" || !participantId) {
+    throw new Error("Invalid participant ID");
+  }
+
+  await prisma.participant.delete({ where: { id: participantId } });
+  revalidatePath("/admin");
+}
+
 export default async function AdminPage({
   searchParams
 }: {
@@ -105,6 +122,7 @@ export default async function AdminPage({
                 <th>Social</th>
                 <th>Answer</th>
                 <th>Registered</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -120,6 +138,14 @@ export default async function AdminPage({
                   </td>
                   <td>{participant.giveawayAnswer}</td>
                   <td>{participant.createdAt.toLocaleString()}</td>
+                  <td>
+                    <form action={deleteParticipant}>
+                      <input type="hidden" name="participantId" value={participant.id} />
+                      <button className="secondary danger admin-delete" type="submit">
+                        Remove
+                      </button>
+                    </form>
+                  </td>
                 </tr>
               ))}
             </tbody>

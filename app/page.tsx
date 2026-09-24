@@ -4,7 +4,8 @@ import { useEffect, useState, type FormEvent } from "react";
 import { getSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | {
     subscribed: boolean;
     alreadyRegistered?: boolean;
@@ -31,7 +32,7 @@ export default function Home() {
   }
 
   async function checkSubscription() {
-    setLoading(true);
+    setVerifying(true);
     setResult(null);
     setError(null);
 
@@ -51,7 +52,7 @@ export default function Home() {
           : "YouTube verification failed."
       );
     } finally {
-      setLoading(false);
+      setVerifying(false);
     }
   }
 
@@ -93,7 +94,7 @@ export default function Home() {
   }
 
   async function verify() {
-    setLoading(true);
+    setVerifying(true);
     setResult(null);
     setError(null);
 
@@ -111,7 +112,7 @@ export default function Home() {
 
   async function submitEntry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
     setError(null);
 
     const formData = new FormData(event.currentTarget);
@@ -133,17 +134,17 @@ export default function Home() {
           currentResult ? { ...currentResult, alreadyRegistered: true } : currentResult
         );
         setError(null);
-        setLoading(false);
+        setSubmitting(false);
         return;
       }
       setError(data.message ?? "We could not save your entry.");
-      setLoading(false);
+      setSubmitting(false);
       return;
     }
 
     setEntrySubmitted(true);
     await loadEntryCount();
-    setLoading(false);
+    setSubmitting(false);
   }
 
   return (
@@ -198,8 +199,8 @@ export default function Home() {
 
           <div className="cta-row">
             {!entrySubmitted && (
-              <button className="primary btn-lg" onClick={verify} disabled={loading}>
-                {loading ? "Connecting..." : "🔴 Verify & Enter"}
+              <button className="primary btn-lg" onClick={verify} disabled={verifying || submitting}>
+                {verifying ? "Connecting..." : "🔴 Verify & Enter"}
               </button>
             )}
             <a
@@ -274,8 +275,8 @@ export default function Home() {
               Sign in with the Google account you use for YouTube. We will verify that exact
               account&apos;s subscription to SkTechGamer before you can complete the giveaway entry.
             </p>
-            <button className="primary" onClick={verify} disabled={loading}>
-              {loading ? "Connecting..." : "🔴 Verify YouTube Subscription"}
+            <button className="primary" onClick={verify} disabled={verifying || submitting}>
+              {verifying ? "Connecting..." : "🔴 Verify YouTube Subscription"}
             </button>
           </div>
         )}
@@ -322,8 +323,8 @@ export default function Home() {
               />
             </label>
 
-            <button className="primary" type="submit" disabled={loading}>
-              {loading ? "Submitting..." : "Submit Giveaway Entry"}
+            <button className="primary" type="submit" disabled={submitting || verifying}>
+              {submitting ? "Submitting..." : "Submit Giveaway Entry"}
             </button>
 
             <p className="social-note">

@@ -194,6 +194,18 @@ h1 span {
 .link:hover {
   transform: translateY(-1px);
 }
+.secondary.danger {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 100, 110, 0.35);
+  background: rgba(255, 70, 85, 0.08);
+  color: #ff9da6;
+  font-size: 12px;
+}
+.secondary.danger:hover {
+  border-color: #ff4655;
+  background: rgba(255, 70, 85, 0.16);
+}
 .btn-lg {
   min-width: 210px;
 }
